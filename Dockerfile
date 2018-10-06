@@ -1,4 +1,4 @@
-FROM nodesource/jessie
+FROM nodesource/xenial
 MAINTAINER Christian Brandlehner <christian@brandlehner.at>
 
 ##################################################
@@ -23,18 +23,19 @@ RUN alias ll='ls -alG'
 # Install homebridge                             #
 ##################################################
 
-RUN npm install -g homebridge --unsafe-perm
+RUN npm install -g --unsafe-perm homebridge
+RUN npm install -g --unsafe-perm homebridge-config-ui-x
 
 # depending on your config.json you have to add your modules here!
-RUN npm install -g homebridge-philipshue --unsafe-perm
-RUN npm install -g homebridge-ninjablock-temperature --unsafe-perm
-RUN npm install -g homebridge-ninjablock-humidity --unsafe-perm
-RUN npm install -g homebridge-ninjablock-alarmstatedevice --unsafe-perm
+# RUN npm install -g homebridge-philipshue --unsafe-perm
+# RUN npm install -g homebridge-ninjablock-temperature --unsafe-perm
+# RUN npm install -g homebridge-ninjablock-humidity --unsafe-perm
+# RUN npm install -g homebridge-ninjablock-alarmstatedevice --unsafe-perm
 RUN npm install -g homebridge-luxtronik2 --unsafe-perm
-RUN npm install -g homebridge-people --unsafe-perm
-RUN npm install -g homebridge-tesla --unsafe-perm
-#RUN npm install -g homebridge-mqttswitch --unsafe-perm
-#RUN npm install -g homebridge-edomoticz --unsafe-perm
+# RUN npm install -g homebridge-people --unsafe-perm
+# RUN npm install -g homebridge-tesla --unsafe-perm
+# RUN npm install -g homebridge-mqttswitch --unsafe-perm
+# RUN npm install -g homebridge-edomoticz --unsafe-perm
 
 ##################################################
 # Start                                          #
@@ -45,5 +46,5 @@ RUN mkdir -p /var/run/dbus
 
 ADD image/run.sh /root/run.sh
 
-EXPOSE 5353 51826
+EXPOSE 5353 51826 8080
 CMD ["/root/run.sh"]

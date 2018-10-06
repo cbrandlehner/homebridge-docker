@@ -108,3 +108,8 @@ updated versions
 ### 0.18
 updated with current nodesource/jessie
 
+### 0.19
+Updated with current nodesource/xenial
+Added GUI for configuration by making use of homebridge-config-ui-x
+Removed most of the homebridge modules as you can now use the GUI to install them.
+
