@@ -1,4 +1,4 @@
-FROM nodesource/xenial
+FROM node:10.11-jessie
 MAINTAINER Christian Brandlehner <christian@brandlehner.at>
 
 ##################################################

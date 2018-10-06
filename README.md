@@ -6,22 +6,25 @@
 Docker image for Homebrigde
 This project only builds a docker image, please do not report problems with homebridge but look into the homebridge project: For details see https://github.com/nfarina/homebridge
 
-As said, this is simply wrapping the source in a runnable Docker image for everyone that cannot install the dev environment on his machine or everyone that wants a simple containerized solution.
-If you intend to run this docker image on a Synology NAS, read this documentation:
-http://chris.brandlehner.at/Brandlehner/cab_blog.nsf/d6plinks/CBRR-A6XQUY
+This is a Docker enabled version of Homebridge designed to run on a Synology NAS from https://github.com/nfarina/homebridge. I am running a Synology 1815+.
 
-## Supported plugins
-homebridge-philipshue
-homebridge-ninjablock-temperature
-homebridge-ninjablock-humidity
-homebridge-ninjablock-alarmstatedevice
-homebridge-luxtronik2
-homebridge-mqttswitch
-homebridge-edomoticz
-homebridge-synology
-homebridge-tesla
+The Docker image has already been built and is on the Docker Hub repository at https://hub.docker.com/r/cbrandlehner/homebridge/ 
+You can search for it from the Synology Docker console Registry and load the image directly to your NAS.
 
-(and you can extend this list by adding more plugins in the file package.json)
+On your Synology NAS, create a "docker/homebridge" folder. After creating your config.json and package.json files, copy them to the shared "docker/homebridge" folder. The config.json will have your homebridge config and the package.json will list the NPM packages that you want to be built each time the container is run. You do not have to build a new image everytime you want to add plugins! See https://github.com/cbrandlehner/homebridge-docker/tree/master/config-sample for samples of both the config.json, package.json and homebridge_start.sh files. If you make any changes to the config.json or package.json files, you will need to restart homebridge for the settings to take.
+
+Run the container from the `homebridge_start.sh` via the Synology Task Scheduler in Coltrol Panel or via SSH command line by entering
+
+`sudo docker run --name=homebridge -d --restart=always --net=host -p 51826:51826 -p 8080:8080 -v /volume1/docker/homebridge:/root/.homebridge cbrandlehner/homebridge:0.20`
+
+Enter your root password to run the command.
+
+If you want to use Synology Task Scheduler in the Control Panel of the NAS, you will need to copy `homebridge_start.sh` to the "docker/homebridge" folder on the shared volume. Next, create a task that runs the `docker/homebridge/homebridge_start.sh` at bootup. For the tasks, you will need to make the task user `root`.
+
+If you are running the firewall on the Synology, you will need to open TCP 5353 & 51826 & 8080. You could select from a list of built-in applications and select "Docker homebridge 51826 Docker (TCP)" and "Bonjour 5353 Bonjour Service". You can find the firwall profiles under the Control Panel/Security. If you do not open these ports, the firewall will close within a few minutes and your app will not be reachable from an IOS device.
+
+##Plugins
+You can find all of the plugins on NPM at https://www.npmjs.com/search?q=homebridge+plugin 
 
 ## Configuration
 
@@ -112,4 +115,9 @@ updated with current nodesource/jessie
 Updated with current nodesource/xenial
 Added GUI for configuration by making use of homebridge-config-ui-x
 Removed most of the homebridge modules as you can now use the GUI to install them.
+
+### 0.20
+Updated homebridge_start.sh script to expose port 8080 for config UI
+Moved from nodesource docker image to pure node.
+Updated readme.
 
