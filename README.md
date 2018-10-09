@@ -121,3 +121,6 @@ Updated homebridge_start.sh script to expose port 8080 for config UI
 Moved from nodesource docker image to pure node.
 Updated readme.
 
+### 0.21
+Updated run script to avoid to start homebridge if the configuration is missing.
+Updated run script to log to /var/log/homebridge
